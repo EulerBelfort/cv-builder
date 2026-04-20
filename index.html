@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Builder - Crie Seu Currículo Profissional</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f8f9fa;
+    color: #1a1a2e;
+    min-height: 100vh;
+}
+
+/* HEADER */
+header {
+    background: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo span {
+    color: #4361ee;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #4361ee 0%, #7c3aed 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.header-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.header-links a {
+    color: #4a4a68;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.header-links a:hover {
+    color: #4361ee;
+}
+
+.header-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.header-icon:hover {
+    opacity: 0.8;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 5rem 2rem 3rem;
+    background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4a 50%, #4361ee 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+    animation: heroGlow 15s infinite linear;
+}
+
+@keyframes heroGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: white;
+    position: relative;
+    letter-spacing: -1px;
+}
+
+.hero p {
+    color: rgba(255,255,255,0.8);
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* TEMPLATES GRID */
+.templates-section {
+    padding: 3rem 2rem;
+    background: white;
+}
+
+.templates-section h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #1a1a2e;
+}
+
+.templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.template-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 1px solid #e9ecef;
+}
+
+.template-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
+    border-color: #4361ee;
+}
+
+.template-preview {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.template-card h3 {
+    padding: 1.25rem;
+    text-align: center;
+    font-weight: 600;
+    border-top: 1px solid #e9ecef;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    color: #1a1a2e;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+/* PREVIEW CV TEMPLATES */
+.template-preview {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.preview-cv {
+    width: 180px;
+    min-height: 240px;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-size: 6px;
+    overflow: hidden;
+}
+
+.preview-header {
+    border-bottom: 2px solid #1a1a2e;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+}
+
+.preview-name {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #1a1a2e;
+}
+
+.preview-contact {
+    font-size: 6px;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+.preview-section {
+    margin-bottom: 6px;
+}
+
+.preview-title {
+    font-size: 7px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #1a1a2e;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 2px;
+    margin-bottom: 4px;
+}
+
+.preview-item {
+    font-size: 6px;
+    color: #4a4a68;
+    margin-bottom: 2px;
+}
+
+/* Classic Preview */
+.preview-classic {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Modern Preview */
+.preview-modern {
+    display: flex;
+    gap: 0;
+}
+
+.preview-modern .preview-sidebar {
+    width: 45%;
+    background: #4361ee;
+    color: white;
+    padding: 6px;
+}
+
+.preview-modern .preview-name {
+    color: white;
+    font-size: 10px;
+}
+
+.preview-modern .preview-contact {
+    color: rgba(255,255,255,0.8);
+    font-size: 5px;
+}
+
+.preview-modern .preview-main {
+    width: 55%;
+    padding: 6px;
+}
+
+.preview-modern .preview-title {
+    color: #4361ee;
+    border-color: #4361ee;
+}
+
+/* Minimal Preview */
+.preview-minimal {
+    text-align: center;
+    padding: 8px;
+}
+
+.preview-minimal .preview-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.preview-minimal .preview-name {
+    letter-spacing: 2px;
+    font-weight: 300;
+}
+
+/* EDITOR MODAL */
+.editor-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.editor-modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+}
+
+.editor-container {
+    background: white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    min-height: 80vh;
+    overflow: hidden;
+}
+
+.editor-sidebar {
+    width: 350px;
+    background: #1a1a2e;
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.editor-sidebar h3 {
+    color: white;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    color: #a0a0b8;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #2d2d4a;
+    border-radius: 8px;
+    background: #252542;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4361ee;
+}
+
+.form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.section-title {
+    color: #4361ee;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 1.5rem 0 1rem;
+    font-weight: 600;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.editor-preview {
+    flex: 1;
+    padding: 2rem;
+    background: #f8f9fa;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.preview-header-info {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.preview-actions {
+    margin-top: 1.5rem;
+}
+
+.template-selector {
+    margin-bottom: 1.5rem;
+}
+
+.template-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #4361ee;
+    color: white;
+    flex: 1;
+}
+
+.btn-primary:hover {
+    background: #3451d9;
+}
+
+.btn-secondary {
+    background: #2d2d4a;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #3d3d5a;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #4361ee;
+    color: #4361ee;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.btn-outline:hover {
+    background: #4361ee;
+    color: white;
+}
+
+.btn-outline.active {
+    background: #4361ee;
+    color: white;
+    border-color: #4361ee;
+    box-shadow: 0 2px 4px rgba(67, 97, 238, 0.3);
+}
+
+.btn-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CV TEMPLATES STYLES */
+.cv-page {
+    width: 210mm;
+    max-height: 297mm;
+    background: white;
+    padding: 10mm;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* MODELO 1 - CLÁSSICO */
+.cv-classic {
+    font-family: 'Inter', sans-serif;
+    color: #1a1a2e;
+}
+
+.cv-classic .cv-header {
+    border-bottom: 2px solid #1a1a2e;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.cv-classic .cv-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.25rem;
+}
+
+.cv-classic .cv-contact {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: #4a4a68;
+}
+
+.cv-classic .cv-section {
+    margin-bottom: 0.5rem;
+}
+
+.cv-classic .cv-section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.4rem;
+    color: #1a1a2e;
+}
+
+.cv-classic .cv-item {
+    margin-bottom: 0.4rem;
+}
+
+.cv-classic .cv-item-title {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.cv-classic .cv-item-sub {
+    font-size: 0.75rem;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.cv-classic .cv-item-desc {
+    font-size: 0.75rem;
+    color: #4a4a68;
+    line-height: 1.4;
+    margin-top: 0.2rem;
+}
+
+.cv-classic .cv-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.cv-classic .cv-skill-tag {
+    background: #e9ecef;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+}
+
+/* MODELO 2 - MODERNO */
+.cv-modern {
+    font-family: 'Inter', sans-serif;
+    display: grid;
+    grid-template-columns: 35% 65%;
+    gap: 0;
+}
+
+.cv-modern .cv-sidebar {
+    background: #4361ee;
+    color: white;
+    padding: 1.5rem;
+    min-height: 100%;
+}
+
+.cv-modern .cv-main {
+    padding: 1.5rem;
+}
+
+.cv-modern .cv-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.cv-modern .cv-title-role {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+}
+
+.cv-modern .cv-sidebar-section {
+    margin-bottom: 1.5rem;
+}
+
+.cv-modern .cv-sidebar-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.cv-modern .cv-contact-item {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+.cv-modern .cv-skill-tag {
+    background: rgba(255,255,255,0.2);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    display: inline-block;
+    margin: 0.2rem;
+}
+
+.cv-modern .cv-main-section {
+    margin-bottom: 1rem;
+}
+
+.cv-modern .cv-main-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #4361ee;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid #4361ee;
+}
+
+.cv-modern .cv-item-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.cv-modern .cv-item-sub {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.cv-modern .cv-item-desc {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    line-height: 1.5;
+    margin-top: 0.3rem;
+}
+
+/* MODELO 3 - MINIMALISTA */
+.cv-minimal {
+    font-family: 'Inter', sans-serif;
+    color: #1a1a2e;
+    padding: 12mm;
+}
+
+.cv-minimal .cv-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.cv-minimal .cv-name {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.cv-minimal .cv-contact {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.cv-minimal .cv-section {
+    margin-bottom: 1.5rem;
+}
+
+.cv-minimal .cv-section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #adb5bd;
+    margin-bottom: 1rem;
+}
+
+.cv-minimal .cv-item {
+    margin-bottom: 1rem;
+}
+
+.cv-minimal .cv-item-title {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.cv-minimal .cv-item-sub {
+    font-size: 0.85rem;
+    color: #adb5bd;
+}
+
+.cv-minimal .cv-item-desc {
+    font-size: 0.85rem;
+    color: #6c757d;
+    line-height: 1.6;
+    margin-top: 0.4rem;
+}
+
+.cv-minimal .cv-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.cv-minimal .cv-skill-tag {
+    font-size: 0.8rem;
+    color: #495057;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: #1a1a2e;
+    color: white;
+    margin-top: 3rem;
+}
+
+footer p {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* PRINT */
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    
+    html, body {
+        background: white !important;
+        color: #1a1a2e !important;
+    }
+    
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    .editor-modal {
+        position: static !important;
+        display: block !important;
+        background: white !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+    
+    .editor-container {
+        display: block !important;
+        background: white !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+    
+    .editor-sidebar {
+        display: none !important;
+    }
+    
+    .editor-preview {
+        padding: 0 !important;
+        margin: 0 auto !important;
+        background: white !important;
+        overflow: visible !important;
+        max-height: none !important;
+        display: block !important;
+    }
+    
+    .cv-page {
+        box-shadow: none !important;
+        margin: 0 auto !important;
+        width: 190mm !important;
+        max-width: 190mm !important;
+        max-height: none !important;
+        padding: 10mm !important;
+        overflow: visible !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .editor-container {
+        flex-direction: column;
+    }
+    
+    .editor-sidebar {
+        width: 100%;
+    }
+    
+    .cv-modern {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-icon">CV</div>
+        <span>OpenSource</span>
+    </div>
+    <nav class="header-links">
+        <a href="https://github.com" target="_blank" title="GitHub">
+            <svg class="header-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+        </a>
+        <a href="https://chat.openai.com" target="_blank" title="ChatGPT">
+            <svg class="header-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.5649A5.9847 5.9847 0 0 0 4.9807 1.2782a6.0551 6.0551 0 0 0-3.9974 2.5649 5.9847 5.9847 0 0 0-.3423 4.9108 6.0551 6.0551 0 0 0 2.6031 5.0271 5.9847 5.9847 0 0 0 6.0225-.4965 6.0551 6.0551 0 0 0 1.5716-4.1807 5.9847 5.9847 0 0 0 .8854.3423 6.0551 6.0551 0 0 0 4.7578 2.6811 5.9847 5.9847 0 0 0 .4965-6.0218 6.0551 6.0551 0 0 0-2.5616-6.5089 zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0805a4.499 4.499 0 0 1 2.7942-.2033 4.5137 4.5137 0 0 1 2.7897.2033l.142.0805a4.4855 4.4855 0 0 1-2.8764 1.0408zm3.207-8.1918a4.4855 4.4855 0 0 1-2.8754-1.0408.9995.9995 0 0 0-.6283.2878.9997.9997 0 0 0 .2731.6425 4.5477 4.5477 0 0 0 3.0565-.0888 4.492 4.492 0 0 0 1.1738-.8563.9995.9995 0 0 0 .0008-.6293.9997.9997 0 0 0-.0008-.6283zm-6.5937 5.6393a4.5154 4.5154 0 0 1-1.0323-2.8786.9997.9997 0 0 0-.4828-.6617.9995.9995 0 0 0-.6688.0219 4.5251 4.5251 0 0 0-.6676 3.4561 4.4592 4.4592 0 0 0 .8734 1.4577.9994.9994 0 0 0 .665-.2184.9997.9997 0 0 0 .0116-.6782z"/>
+            </svg>
+        </a>
+        <a href="#templates">Templates</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Crie Seu Currículo Profissional</h1>
+    <p>Escolha um de nossos modelos gratuitos, personalize e gere seu PDF em segundos</p>
+</section>
+
+<section class="templates-section" id="templates">
+    <h2>Escolha um Template</h2>
+    <div class="templates-grid">
+        <div class="template-card" onclick="openEditor('classic')">
+            <div class="template-preview">
+                <div class="preview-cv preview-classic">
+                    <div class="preview-header">
+                        <div class="preview-name">João Silva</div>
+                        <div class="preview-contact">joao@email.com · (11) 99999-9999 · São Paulo, SP</div>
+                    </div>
+                    <div class="preview-section">
+                        <div class="preview-title">Experiência</div>
+                        <div class="preview-item">Empresa X - Desenvolvedor</div>
+                        <div class="preview-item">Empresa Y - Analista</div>
+                    </div>
+                    <div class="preview-section">
+                        <div class="preview-title">Formação</div>
+                        <div class="preview-item">Universidade X - Administração</div>
+                    </div>
+                </div>
+            </div>
+            <h3>Clássico</h3>
+        </div>
+
+        <div class="template-card" onclick="openEditor('modern')">
+            <div class="template-preview">
+                <div class="preview-cv preview-modern">
+                    <div class="preview-sidebar">
+                        <div class="preview-name">João Silva</div>
+                        <div class="preview-contact">joao@email.com · (11) 99999-9999</div>
+                    </div>
+                    <div class="preview-main">
+                        <div class="preview-section">
+                            <div class="preview-title">Experiência</div>
+                            <div class="preview-item">Empresa X - Desenvolvedor</div>
+                            <div class="preview-item">Empresa Y - Analista</div>
+                        </div>
+                        <div class="preview-section">
+                            <div class="preview-title">Formação</div>
+                            <div class="preview-item">Universidade X - Administração</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3>Moderno</h3>
+        </div>
+
+        <div class="template-card" onclick="openEditor('minimal')">
+            <div class="template-preview">
+                <div class="preview-cv preview-minimal">
+                    <div class="preview-header">
+                        <div class="preview-name">João Silva</div>
+                        <div class="preview-contact">joao@email.com · (11) 99999-9999</div>
+                    </div>
+                    <div class="preview-section">
+                        <div class="preview-title">Experiência</div>
+                        <div class="preview-item">Empresa X - Desenvolvedor</div>
+                        <div class="preview-item">Empresa Y - Analista</div>
+                    </div>
+                    <div class="preview-section">
+                        <div class="preview-title">Formação</div>
+                        <div class="preview-item">Universidade X - Administração</div>
+                    </div>
+                </div>
+            </div>
+            <h3>Minimalista</h3>
+        </div>
+    </div>
+</section>
+
+<footer id="sobre">
+    <p>CV Builder - Crie currículos profissionais gratuitamente</p>
+</footer>
+
+<!-- EDITOR MODAL -->
+<div class="editor-modal" id="editorModal">
+    <div class="editor-container">
+        <div class="editor-sidebar">
+            <h3>Editar Currículo</h3>
+            
+            <div class="section-title">Dados Pessoais</div>
+            
+            <div class="form-group">
+                <label>Nome Completo</label>
+                <input type="text" id="nome" placeholder="João da Silva">
+            </div>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="joao@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label>Telefone</label>
+                <input type="text" id="telefone" placeholder="(11) 99999-9999">
+            </div>
+            
+            <div class="form-group">
+                <label>LinkedIn</label>
+                <input type="text" id="linkedin" placeholder="linkedin.com/in/joao">
+            </div>
+            
+            <div class="form-group">
+                <label>Localização</label>
+                <input type="text" id="localizacao" placeholder="São Paulo, SP">
+            </div>
+            
+            <div class="section-title">Perfil Profissional</div>
+            
+            <div class="form-group">
+                <label>Resumo Profissional</label>
+                <textarea id="resumo" placeholder="Descreva sua trajetória profissional..."></textarea>
+            </div>
+            
+            <div class="section-title">Experiência 1</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Empresa</label>
+                    <input type="text" id="emp1_nome" placeholder="Empresa X">
+                </div>
+                <div class="form-group">
+                    <label>Cargo</label>
+                    <input type="text" id="emp1_cargo" placeholder="Desenvolvedor">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Período</label>
+                    <input type="text" id="emp1_periodo" placeholder="2020 - 2024">
+                </div>
+                <div class="form-group">
+                    <label>Local</label>
+                    <input type="text" id="emp1_local" placeholder="São Paulo">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="emp1_desc" placeholder="Principais atividades e conquistas..."></textarea>
+            </div>
+            
+            <div class="section-title">Experiência 2</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Empresa</label>
+                    <input type="text" id="emp2_nome" placeholder="Empresa Y">
+                </div>
+                <div class="form-group">
+                    <label>Cargo</label>
+                    <input type="text" id="emp2_cargo" placeholder="Analista">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Período</label>
+                    <input type="text" id="emp2_periodo" placeholder="2018 - 2020">
+                </div>
+                <div class="form-group">
+                    <label>Local</label>
+                    <input type="text" id="emp2_local" placeholder="São Paulo">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="emp2_desc" placeholder="Principais atividades e conquistas..."></textarea>
+            </div>
+            
+            <div class="section-title">Formação</div>
+            
+            <div class="form-group">
+                <label>Formação 1</label>
+                <input type="text" id="form1" placeholder="Universidade X - Administração">
+            </div>
+            
+            <div class="form-group">
+                <label>Formação 2</label>
+                <input type="text" id="form2" placeholder="Universidade Y - Engenharia">
+            </div>
+            
+            <div class="form-group">
+                <label>Cursos</label>
+                <textarea id="cursos" placeholder="Curso X - 2024&#10;Curso Y - 2023"></textarea>
+            </div>
+            
+            <div class="section-title">Habilidades</div>
+            
+            <div class="form-group">
+                <label>Skills (separadas por vírgula)</label>
+                <textarea id="skills" placeholder="JavaScript, Python, Power BI, SQL"></textarea>
+            </div>
+            
+            <div class="section-title">Idiomas</div>
+            
+            <div class="form-group">
+                <label>Idiomas</label>
+                <textarea id="idiomas" placeholder="Inglês - Avançado&#10;Espanhol - Intermediário"></textarea>
+            </div>
+            
+            <div class="preview-actions">
+                <div class="template-selector">
+                    <small style="color: #6c757d; font-size: 0.8rem; margin-bottom: 0.5rem; display: block;">Visualizar em outro modelo:</small>
+                    <div class="template-buttons">
+                        <button class="btn btn-outline" onclick="switchTemplate('classic')">Modelo 1</button>
+                        <button class="btn btn-outline" onclick="switchTemplate('modern')">Modelo 2</button>
+                        <button class="btn btn-outline" onclick="switchTemplate('minimal')">Modelo 3</button>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="closeEditor()">Fechar</button>
+                    <button class="btn btn-primary" onclick="generatePDF()">Gerar PDF</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="editor-preview">
+            <div class="preview-header-info">
+                <small id="currentTemplateInfo" style="color: #6c757d; font-size: 0.8rem;">Visualizando: Modelo 1</small>
+            </div>
+            <div id="cvOutput" class="cv-page">
+                <!-- CV será renderizado aqui -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="lib/html2canvas.min.js"></script>
+<script src="lib/jspdf.min.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
