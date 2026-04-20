@@ -429,7 +429,7 @@ function generateClassicPDF(data) {
     // Baixar o PDF
     pdf.save('meu-curriculo.pdf');
     console.log('PDF Classic gerado e baixado com sucesso!');
-    alert('PDF gerado com sucesso!\nTemplate usado: Classic\nArquivo baixado: meu-curriculo.pdf\n\n✅ O PDF contém texto real, não imagem!');
+    alert('PDF gerado com sucesso!\nTemplate usado: Classic\nArquivo baixado: meu-curriculo.pdf\n\n✅ Curriculo ok!');
 }
 
 function generateModernPDF(data) {
@@ -487,7 +487,7 @@ function generateModernPDF(data) {
     // Baixar o PDF
     pdf.save('meu-curriculo.pdf');
     console.log('PDF Modern gerado e baixado com sucesso!');
-    alert('PDF gerado com sucesso!\nTemplate usado: Modern\nArquivo baixado: meu-curriculo.pdf\n\n✅ O PDF contém texto real, não imagem!');
+    alert('PDF gerado com sucesso!\nTemplate usado: Modern\nArquivo baixado: meu-curriculo.pdf\n\n✅ Curriculo ok!');
 }
 
 function generateMinimalPDF(data) {
@@ -537,7 +537,7 @@ function generateMinimalPDF(data) {
     // Baixar o PDF
     pdf.save('meu-curriculo.pdf');
     console.log('PDF Minimal gerado e baixado com sucesso!');
-    alert('PDF gerado com sucesso!\nTemplate usado: Minimal\nArquivo baixado: meu-curriculo.pdf\n\n✅ O PDF contém texto real, não imagem!');
+    alert('PDF gerado com sucesso!\nTemplate usado: Minimal\nArquivo baixado: meu-curriculo.pdf\n\n✅ Curriculo ok!');
 }
 
 function addPDFSections(pdf, data, margin, contentWidth, yPosition, pageWidth) {
@@ -709,7 +709,7 @@ function addPDFSections(pdf, data, margin, contentWidth, yPosition, pageWidth) {
     pdf.setFontSize(6);
     pdf.setTextColor(150, 150, 150); // Cinza claro, quase invisível
     pdf.setFont('helvetica', 'normal');
-    const watermark = 'Gerado por CV-OpenSource - https://github.com/cv-opensource';
+    const watermark = 'Gerado por CV-OpenSource - https://eulerbelfort.github.io/cv-builder/';
     const watermarkWidth = pdf.getTextWidth(watermark);
     pdf.text(watermark, (pageWidth - watermarkWidth) / 2, yPosition);
 }
