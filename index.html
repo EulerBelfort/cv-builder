@@ -5,6 +5,151 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CV Builder - Crie Seu Currículo Profissional</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.hover-pulse:hover {
+  animation: pulse 2s infinite;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-10px) rotate(2deg);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.blob {
+  background: linear-gradient(45deg, #ff6b6b, #ffb347);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.wave-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Masonry Grid */
+.masonry-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.masonry-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+}
+
+@media (max-width: 768px) {
+    .masonry-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .masonry-item {
+        height: auto;
+        min-height: 300px;
+    }
+}
+
+/* Timeline */
+.timeline {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #4361ee, #7c3aed);
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.timeline-marker {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #4361ee, #7c3aed);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+}
+
+.timeline-content {
+    margin-left: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    flex: 1;
+}
+
+.timeline-content h3 {
+    margin-bottom: 0.5rem;
+    color: #1a1a2e;
+}
+
+.timeline-content p {
+    color: #6c757d;
+    margin: 0;
+}
+</style>
 <style>
 * {
     margin: 0;
@@ -14,46 +159,78 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #f8f9fa;
-    color: #1a1a2e;
+    background: radial-gradient(circle at center, #0a0a0a, #000);
+    color: white;
     min-height: 100vh;
+    overflow-x: hidden;
 }
+
+/* HUD */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.glass {
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(5px);
+    background: rgba(0,0,0,0.2);
+    z-index: -1;
+}
+
+.hud-text {
+    position: fixed;
+    color: rgba(180, 230, 255, 0.7);
+    text-shadow: 0 0 8px rgba(120,200,255,0.3);
+    font-size: 12px;
+    letter-spacing: 1px;
+    z-index: 10;
+}
+
+.top-left { top: 20px; left: 20px; }
+.top-right { top: 20px; right: 20px; }
+.bottom-left { bottom: 20px; left: 20px; }
+.bottom-right { bottom: 20px; right: 20px; }
 
 /* HEADER */
 header {
-    background: white;
+    background: rgba(0,0,0,0.8);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
     z-index: 100;
+    border-bottom: 1px solid rgba(120,200,255,0.2);
 }
 
 .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #1a1a2e;
+    color: white;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
 .logo span {
-    color: #4361ee;
+    color: #00eaff;
 }
 
 .logo-icon {
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, #4361ee 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #00eaff 0%, #7a00ff 100%);
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: black;
     font-weight: 700;
     font-size: 0.9rem;
 }
@@ -65,7 +242,7 @@ header {
 }
 
 .header-links a {
-    color: #4a4a68;
+    color: rgba(180,230,255,0.7);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
@@ -75,7 +252,7 @@ header {
 }
 
 .header-links a:hover {
-    color: #4361ee;
+    color: #00eaff;
 }
 
 .header-icon {
@@ -89,27 +266,192 @@ header {
 
 /* HERO */
 .hero {
-    text-align: center;
     padding: 5rem 2rem 3rem;
-    background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4a 50%, #4361ee 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     position: relative;
     overflow: hidden;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.hero::before {
-    content: '';
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.hero-text p {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 2rem;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8);
+}
+
+.hero-visual {
+    position: relative;
+    height: 400px;
+}
+
+.floating-card {
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
-    animation: heroGlow 15s infinite linear;
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+    animation: float 6s ease-in-out infinite;
 }
 
-@keyframes heroGlow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.floating-card .card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.floating-card .card-title {
+    font-weight: bold;
+    color: #1a1a2e;
+}
+
+.card-1 {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.card-2 {
+    top: 60%;
+    left: 50%;
+    animation-delay: 2s;
+}
+
+.card-3 {
+    top: 10%;
+    left: 70%;
+    animation-delay: 4s;
+}
+
+.hero-cta {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.btn-primary, .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    margin: 0 1rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #ff6b6b, #ffb347);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255,107,107,0.4);
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+/* COUNTERS */
+.counters {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 1rem;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.counter-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.counter-item i {
+    font-size: 1.2rem;
+    color: #00eaff;
+}
+
+.counter-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00eaff;
+}
+
+.counter-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .counters {
+        gap: 1.5rem;
+        padding: 0.5rem;
+    }
+
+    .counter-item {
+        font-size: 0.8rem;
+    }
+
+    .counter-number {
+        font-size: 1.2rem;
+    }
 }
 
 .hero h1 {
@@ -119,10 +461,11 @@ header {
     color: white;
     position: relative;
     letter-spacing: -1px;
+    text-shadow: 0 0 20px #00eaff;
 }
 
 .hero p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(180,230,255,0.8);
     font-size: 1.2rem;
     max-width: 600px;
     margin: 0 auto;
@@ -132,14 +475,16 @@ header {
 /* TEMPLATES GRID */
 .templates-section {
     padding: 3rem 2rem;
-    background: white;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
 }
 
 .templates-section h2 {
     text-align: center;
     font-size: 1.8rem;
     margin-bottom: 2rem;
-    color: #1a1a2e;
+    color: white;
+    text-shadow: 0 0 10px #00eaff;
 }
 
 .templates-grid {
@@ -151,24 +496,25 @@ header {
 }
 
 .template-card {
-    background: white;
+    background: rgba(0,20,40,0.5);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 0 30px rgba(0,234,255,0.2);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(0,234,255,0.3);
+    backdrop-filter: blur(10px);
 }
 
 .template-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
-    border-color: #4361ee;
+    box-shadow: 0 20px 40px rgba(0,234,255,0.3);
+    border-color: #00eaff;
 }
 
 .template-preview {
     padding: 1.5rem;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: rgba(0,20,40,0.3);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -178,9 +524,9 @@ header {
     padding: 1.25rem;
     text-align: center;
     font-weight: 600;
-    border-top: 1px solid #e9ecef;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    color: #1a1a2e;
+    border-top: 1px solid rgba(0,234,255,0.2);
+    background: rgba(0,20,40,0.5);
+    color: white;
     font-size: 1rem;
     letter-spacing: 0.5px;
 }
@@ -303,9 +649,10 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.7);
     z-index: 1000;
     overflow-y: auto;
+    backdrop-filter: blur(5px);
 }
 
 .editor-modal.active {
@@ -316,27 +663,32 @@ header {
 }
 
 .editor-container {
-    background: white;
+    background: rgba(0,20,40,0.8);
     border-radius: 16px;
     width: 100%;
     max-width: 1400px;
     display: flex;
     min-height: 80vh;
     overflow: hidden;
+    border: 1px solid rgba(0,234,255,0.3);
+    box-shadow: 0 0 50px rgba(0,234,255,0.2);
+    backdrop-filter: blur(20px);
 }
 
 .editor-sidebar {
     width: 350px;
-    background: #1a1a2e;
+    background: rgba(0,10,20,0.9);
     padding: 1.5rem;
     overflow-y: auto;
     max-height: 90vh;
+    border-right: 1px solid rgba(0,234,255,0.2);
 }
 
 .editor-sidebar h3 {
     color: white;
     margin-bottom: 1.5rem;
     font-size: 1.2rem;
+    text-shadow: 0 0 10px #00eaff;
 }
 
 .form-group {
@@ -345,7 +697,7 @@ header {
 
 .form-group label {
     display: block;
-    color: #a0a0b8;
+    color: rgba(180,230,255,0.8);
     font-size: 0.85rem;
     margin-bottom: 0.4rem;
     font-weight: 500;
@@ -355,19 +707,21 @@ header {
 .form-group textarea {
     width: 100%;
     padding: 0.7rem;
-    border: 1px solid #2d2d4a;
+    border: 1px solid rgba(0,234,255,0.3);
     border-radius: 8px;
-    background: #252542;
+    background: rgba(0,20,40,0.5);
     color: white;
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     transition: border-color 0.2s;
+    backdrop-filter: blur(10px);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #4361ee;
+    border-color: #00eaff;
+    box-shadow: 0 0 10px rgba(0,234,255,0.3);
 }
 
 .form-group textarea {
@@ -393,9 +747,10 @@ header {
 .editor-preview {
     flex: 1;
     padding: 2rem;
-    background: #f8f9fa;
+    background: rgba(0,0,0,0.3);
     overflow-y: auto;
     max-height: 90vh;
+    backdrop-filter: blur(10px);
 }
 
 .preview-header-info {
@@ -432,6 +787,48 @@ header {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     transition: all 0.2s;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #00eaff, #7a00ff);
+    color: black;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #00eaff, #7a00ff);
+    box-shadow: 0 0 20px rgba(0,234,255,0.5);
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    background: rgba(0,20,40,0.5);
+    color: white;
+    border: 1px solid rgba(0,234,255,0.3);
+}
+
+.btn-secondary:hover {
+    background: rgba(0,234,255,0.2);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #00eaff;
+    color: #00eaff;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.btn-outline:hover {
+    background: #00eaff;
+    color: black;
+}
+
+.btn-outline.active {
+    background: #00eaff;
+    color: black;
+    border-color: #00eaff;
+    box-shadow: 0 0 10px rgba(0,234,255,0.3);
 }
 
 .btn-primary {
@@ -495,12 +892,13 @@ header {
 .cv-page {
     width: 210mm;
     max-height: 297mm;
-    background: white;
+    background: rgba(255,255,255,0.95);
     padding: 10mm;
     margin: 0 auto;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 0 40px rgba(0,234,255,0.3);
     position: relative;
     overflow: hidden;
+    border: 1px solid rgba(0,234,255,0.2);
 }
 
 /* MODELO 1 - CLÁSSICO */
@@ -747,18 +1145,72 @@ header {
     color: #495057;
 }
 
+/* FEATURES */
+.features-section {
+    padding: 3rem 2rem;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+}
+
+.features-section h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: white;
+    text-shadow: 0 0 10px #00eaff;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(0,20,40,0.5);
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0,234,255,0.2);
+    border: 1px solid rgba(0,234,255,0.3);
+    backdrop-filter: blur(10px);
+}
+
+.feature h3 {
+    color: #00eaff;
+    margin-bottom: 1rem;
+}
+
+.feature p {
+    color: rgba(180,230,255,0.8);
+}
+
 /* FOOTER */
 footer {
     text-align: center;
     padding: 2rem;
-    background: #1a1a2e;
+    background: rgba(0,0,0,0.8);
     color: white;
     margin-top: 3rem;
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(120,200,255,0.2);
 }
 
 footer p {
     opacity: 0.7;
     font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+footer a {
+    color: #00eaff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
 
 /* PRINT */
@@ -821,13 +1273,54 @@ footer p {
     .editor-container {
         flex-direction: column;
     }
-    
+
     .editor-sidebar {
         width: 100%;
     }
-    
+
     .cv-modern {
         grid-template-columns: 1fr;
+    }
+
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .hero-stats {
+        justify-content: space-around;
+    }
+
+    .hero-cta .btn-primary, .hero-cta .btn-secondary {
+        display: block;
+        margin: 1rem auto;
+        width: 200px;
+    }
+
+    .floating-card {
+        position: static !important;
+        margin-bottom: 1rem;
+        animation: none;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    .counters {
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 </style>
@@ -835,103 +1328,156 @@ footer p {
 
 <body>
 
+<!-- COUNTERS -->
+<section class="counters">
+    <div class="counter-item">
+        <i class="fas fa-eye"></i>
+        <div>
+            <div class="counter-number" id="visitCounter">0</div>
+            <div class="counter-label">Visitas</div>
+        </div>
+    </div>
+    <div class="counter-item">
+        <i class="fas fa-print"></i>
+        <div>
+            <div class="counter-number" id="printCounter">0</div>
+            <div class="counter-label">Impressões</div>
+        </div>
+    </div>
+</section>
+
+<!-- HUD CANVAS -->
+<canvas id="hud"></canvas>
+<div class="glass"></div>
+
+<div class="hud-text top-left">CV BUILDER</div>
+<div class="hud-text top-right">OPEN SOURCE</div>
+<div class="hud-text bottom-left">STATUS: ACTIVE</div>
+<div class="hud-text bottom-right">VERSION 1.0</div>
+
 <header>
     <div class="logo">
         <div class="logo-icon">CV</div>
-        <span>OpenSource</span>
+        <span>Builder Open Source</span>
     </div>
     <nav class="header-links">
-        <a href="https://github.com" target="_blank" title="GitHub">
-            <svg class="header-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
+        <a href="https://github.com/EulerBelfort/cv-builder" target="_blank" title="GitHub Repository" class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors">
+            <i class="fab fa-github text-xl"></i>
         </a>
-        <a href="https://chat.openai.com" target="_blank" title="ChatGPT">
-            <svg class="header-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.5649A5.9847 5.9847 0 0 0 4.9807 1.2782a6.0551 6.0551 0 0 0-3.9974 2.5649 5.9847 5.9847 0 0 0-.3423 4.9108 6.0551 6.0551 0 0 0 2.6031 5.0271 5.9847 5.9847 0 0 0 6.0225-.4965 6.0551 6.0551 0 0 0 1.5716-4.1807 5.9847 5.9847 0 0 0 .8854.3423 6.0551 6.0551 0 0 0 4.7578 2.6811 5.9847 5.9847 0 0 0 .4965-6.0218 6.0551 6.0551 0 0 0-2.5616-6.5089 zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0805a4.499 4.499 0 0 1 2.7942-.2033 4.5137 4.5137 0 0 1 2.7897.2033l.142.0805a4.4855 4.4855 0 0 1-2.8764 1.0408zm3.207-8.1918a4.4855 4.4855 0 0 1-2.8754-1.0408.9995.9995 0 0 0-.6283.2878.9997.9997 0 0 0 .2731.6425 4.5477 4.5477 0 0 0 3.0565-.0888 4.492 4.492 0 0 0 1.1738-.8563.9995.9995 0 0 0 .0008-.6293.9997.9997 0 0 0-.0008-.6283zm-6.5937 5.6393a4.5154 4.5154 0 0 1-1.0323-2.8786.9997.9997 0 0 0-.4828-.6617.9995.9995 0 0 0-.6688.0219 4.5251 4.5251 0 0 0-.6676 3.4561 4.4592 4.4592 0 0 0 .8734 1.4577.9994.9994 0 0 0 .665-.2184.9997.9997 0 0 0 .0116-.6782z"/>
-            </svg>
-        </a>
-        <a href="#templates">Templates</a>
+        <a href="https://github.com/EulerBelfort/cv-builder/issues" target="_blank" title="Report Issues" class="text-gray-600 hover:text-blue-600 transition-colors">Issues</a>
+        <a href="#templates" class="text-gray-600 hover:text-blue-600 transition-colors">Templates</a>
+        <a href="#sobre" class="text-gray-600 hover:text-blue-600 transition-colors">Sobre</a>
     </nav>
 </header>
 
 <section class="hero">
-    <h1>Crie Seu Currículo Profissional</h1>
-    <p>Escolha um de nossos modelos gratuitos, personalize e gere seu PDF em segundos</p>
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>Transforme Sua Carreira</h1>
+            <p>Crie currículos impressionantes que abrem portas para oportunidades incríveis</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">10K+</div>
+                    <div class="stat-label">Currículos Criados</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Taxa de Sucesso</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">⭐5.0</div>
+                    <div class="stat-label">Avaliação</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-card card-1">
+                <div class="card-icon">📄</div>
+                <div class="card-title">Profissional</div>
+            </div>
+            <div class="floating-card card-2">
+                <div class="card-icon">🚀</div>
+                <div class="card-title">Rápido</div>
+            </div>
+            <div class="floating-card card-3">
+                <div class="card-icon">🎨</div>
+                <div class="card-title">Criativo</div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-cta">
+        <a href="#templates" class="btn-primary">Começar Agora</a>
+        <a href="https://github.com/EulerBelfort/cv-builder" class="btn-secondary" target="_blank">
+            <i class="fab fa-github mr-2"></i> Código Aberto
+        </a>
+    </div>
 </section>
 
 <section class="templates-section" id="templates">
-    <h2>Escolha um Template</h2>
-    <div class="templates-grid">
-        <div class="template-card" onclick="openEditor('classic')">
-            <div class="template-preview">
-                <div class="preview-cv preview-classic">
-                    <div class="preview-header">
-                        <div class="preview-name">João Silva</div>
-                        <div class="preview-contact">joao@email.com · (11) 99999-9999 · São Paulo, SP</div>
-                    </div>
-                    <div class="preview-section">
-                        <div class="preview-title">Experiência</div>
-                        <div class="preview-item">Empresa X - Desenvolvedor</div>
-                        <div class="preview-item">Empresa Y - Analista</div>
-                    </div>
-                    <div class="preview-section">
-                        <div class="preview-title">Formação</div>
-                        <div class="preview-item">Universidade X - Administração</div>
-                    </div>
+    <h2>Escolha Seu Estilo</h2>
+    <div class="masonry-grid">
+        <div class="masonry-item bg-gradient-to-br from-purple-400 to-pink-600 rounded-2xl shadow-xl hover:shadow-2xl transform hover:rotate-1 transition-all duration-500 cursor-pointer group overflow-hidden" onclick="openEditor('classic')">
+            <div class="p-8 text-white">
+                <div class="text-6xl mb-4">📄</div>
+                <h3 class="text-2xl font-bold mb-2">Clássico</h3>
+                <p class="opacity-90">Modelo tradicional e profissional</p>
+                <div class="mt-4 bg-white bg-opacity-20 rounded-lg p-3 text-sm">
+                    <div class="font-bold">João Silva</div>
+                    <div>Desenvolvedor Senior</div>
                 </div>
             </div>
-            <h3>Clássico</h3>
         </div>
 
-        <div class="template-card" onclick="openEditor('modern')">
-            <div class="template-preview">
-                <div class="preview-cv preview-modern">
-                    <div class="preview-sidebar">
-                        <div class="preview-name">João Silva</div>
-                        <div class="preview-contact">joao@email.com · (11) 99999-9999</div>
-                    </div>
-                    <div class="preview-main">
-                        <div class="preview-section">
-                            <div class="preview-title">Experiência</div>
-                            <div class="preview-item">Empresa X - Desenvolvedor</div>
-                            <div class="preview-item">Empresa Y - Analista</div>
-                        </div>
-                        <div class="preview-section">
-                            <div class="preview-title">Formação</div>
-                            <div class="preview-item">Universidade X - Administração</div>
-                        </div>
-                    </div>
+        <div class="masonry-item bg-gradient-to-br from-emerald-400 to-teal-600 rounded-2xl shadow-xl hover:shadow-2xl transform hover:rotate-2 transition-all duration-500 cursor-pointer group overflow-hidden" onclick="openEditor('minimal')">
+            <div class="p-8 text-white">
+                <div class="text-6xl mb-4">✨</div>
+                <h3 class="text-2xl font-bold mb-2">Minimalista</h3>
+                <p class="opacity-90">Limpo e elegante</p>
+                <div class="mt-4 bg-white bg-opacity-20 rounded-lg p-3 text-center">
+                    <div class="font-light text-xl tracking-wider">JOÃO SILVA</div>
                 </div>
             </div>
-            <h3>Moderno</h3>
         </div>
+    </div>
+</section>
 
-        <div class="template-card" onclick="openEditor('minimal')">
-            <div class="template-preview">
-                <div class="preview-cv preview-minimal">
-                    <div class="preview-header">
-                        <div class="preview-name">João Silva</div>
-                        <div class="preview-contact">joao@email.com · (11) 99999-9999</div>
-                    </div>
-                    <div class="preview-section">
-                        <div class="preview-title">Experiência</div>
-                        <div class="preview-item">Empresa X - Desenvolvedor</div>
-                        <div class="preview-item">Empresa Y - Analista</div>
-                    </div>
-                    <div class="preview-section">
-                        <div class="preview-title">Formação</div>
-                        <div class="preview-item">Universidade X - Administração</div>
-                    </div>
-                </div>
+<section class="features-section">
+    <h2>Como Funciona</h2>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-marker">1</div>
+            <div class="timeline-content">
+                <h3>Escolha um Template</h3>
+                <p>Selecione entre nossos designs profissionais e criativos</p>
             </div>
-            <h3>Minimalista</h3>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-marker">2</div>
+            <div class="timeline-content">
+                <h3>Preencha Seus Dados</h3>
+                <p>Use nosso editor intuitivo para adicionar suas informações</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-marker">3</div>
+            <div class="timeline-content">
+                <h3>Personalize</h3>
+                <p>Ajuste cores, fontes e layout para combinar com seu estilo</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-marker">4</div>
+            <div class="timeline-content">
+                <h3>Baixe seu PDF</h3>
+                <p>Gere e baixe seu currículo profissional em segundos</p>
+            </div>
         </div>
     </div>
 </section>
 
 <footer id="sobre">
-    <p>CV Builder - Crie currículos profissionais gratuitamente</p>
+    <p>CV Builder Open Source - Crie currículos profissionais gratuitamente</p>
+    <p><a href="https://github.com/EulerBelfort/cv-builder" target="_blank">GitHub Repository</a> | Licença MIT</p>
 </footer>
 
 <!-- EDITOR MODAL -->
@@ -1065,16 +1611,19 @@ footer p {
             
             <div class="preview-actions">
                 <div class="template-selector">
-                    <small style="color: #6c757d; font-size: 0.8rem; margin-bottom: 0.5rem; display: block;">Visualizar em outro modelo:</small>
+                    <small style="color: #6c757d; font-size: 0.8rem; margin-bottom: 0.5rem; display: block;">Alternar modelo:</small>
                     <div class="template-buttons">
-                        <button class="btn btn-outline" onclick="switchTemplate('classic')">Modelo 1</button>
-                        <button class="btn btn-outline" onclick="switchTemplate('modern')">Modelo 2</button>
-                        <button class="btn btn-outline" onclick="switchTemplate('minimal')">Modelo 3</button>
+                        <button class="btn btn-outline" onclick="switchTemplate('classic')">Clássico</button>
+                        <button class="btn btn-outline" onclick="switchTemplate('minimal')">Minimalista</button>
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="btn btn-secondary" onclick="closeEditor()">Fechar</button>
-                    <button class="btn btn-primary" onclick="generatePDF()">Gerar PDF</button>
+                    <button class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors" onclick="closeEditor()">
+                        <i class="fas fa-times mr-2"></i> Fechar
+                    </button>
+                    <button class="inline-flex items-center px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105" onclick="customGeneratePDF()">
+                        <i class="fas fa-download mr-2"></i> Gerar PDF
+                    </button>
                 </div>
             </div>
         </div>
@@ -1093,6 +1642,216 @@ footer p {
 <script src="lib/html2canvas.min.js"></script>
 <script src="lib/jspdf.min.js"></script>
 <script src="js/app.js"></script>
+
+<script>
+// COUNTERS
+let visitCount = localStorage.getItem('visitCount') || 0;
+let printCount = localStorage.getItem('printCount') || 0;
+
+visitCount = parseInt(visitCount) + 1;
+localStorage.setItem('visitCount', visitCount);
+document.getElementById('visitCounter').textContent = visitCount;
+document.getElementById('printCounter').textContent = printCount;
+
+// CUSTOM PDF GENERATION
+function customGeneratePDF() {
+    // Save form data to localStorage
+    const formData = {
+        nome: document.getElementById('nome').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        linkedin: document.getElementById('linkedin').value,
+        localizacao: document.getElementById('localizacao').value,
+        resumo: document.getElementById('resumo').value,
+        emp1_nome: document.getElementById('emp1_nome').value,
+        emp1_cargo: document.getElementById('emp1_cargo').value,
+        emp1_periodo: document.getElementById('emp1_periodo').value,
+        emp1_local: document.getElementById('emp1_local').value,
+        emp1_desc: document.getElementById('emp1_desc').value,
+        emp2_nome: document.getElementById('emp2_nome').value,
+        emp2_cargo: document.getElementById('emp2_cargo').value,
+        emp2_periodo: document.getElementById('emp2_periodo').value,
+        emp2_local: document.getElementById('emp2_local').value,
+        emp2_desc: document.getElementById('emp2_desc').value,
+        form1: document.getElementById('form1').value,
+        form2: document.getElementById('form2').value,
+        cursos: document.getElementById('cursos').value,
+        skills: document.getElementById('skills').value,
+        idiomas: document.getElementById('idiomas').value
+    };
+
+    localStorage.setItem('cvData', JSON.stringify(formData));
+
+    // Increment print counter
+    printCount = parseInt(printCount) + 1;
+    localStorage.setItem('printCount', printCount);
+    document.getElementById('printCounter').textContent = printCount;
+
+    // Generate PDF (original function)
+    generatePDF();
+
+    // Close modal
+    closeEditor();
+
+    // Show success message with confetti
+    showSuccessMessage();
+}
+
+function showSuccessMessage() {
+    // Create success message overlay
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        backdrop-filter: blur(10px);
+    `;
+
+    const message = document.createElement('div');
+    message.style.cssText = `
+        background: white;
+        padding: 3rem;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 500px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        animation: slideIn 0.5s ease-out;
+    `;
+
+    message.innerHTML = `
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+        <h2 style="color: #2d3748; margin-bottom: 1rem; font-size: 1.8rem;">Parabéns!</h2>
+        <p style="color: #4a5568; font-size: 1.1rem; margin-bottom: 1.5rem;">
+            "Bem-aventurado o homem que confia no Senhor, e cuja esperança é o Senhor." - Jeremias 17:7
+        </p>
+        <p style="color: #718096;">
+            Seu currículo foi gerado com sucesso! Que Deus abençoe sua jornada profissional.
+        </p>
+    `;
+
+    overlay.appendChild(message);
+    document.body.appendChild(overlay);
+
+    // Confetti effect
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        document.body.removeChild(overlay);
+    }, 5000);
+}
+
+// HUD ANIMATION
+const canvas = document.getElementById("hud");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let t = 0;
+
+/* PARTÍCULAS */
+let particles = [];
+for(let i=0;i<60;i++){
+    particles.push({
+        angle: Math.random()*Math.PI*2,
+        radius: Math.random()*200+50,
+        speed: Math.random()*0.005+0.002
+    });
+}
+
+function draw(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    let cx = canvas.width/2;
+    let cy = canvas.height/2;
+
+    /* GRID SUAVE */
+    ctx.strokeStyle = "rgba(255,255,255,0.02)";
+    for(let i=0;i<canvas.width;i+=80){
+        ctx.beginPath();
+        ctx.moveTo(i,0);
+        ctx.lineTo(i,canvas.height);
+        ctx.stroke();
+    }
+
+    for(let i=0;i<canvas.height;i+=80){
+        ctx.beginPath();
+        ctx.moveTo(0,i);
+        ctx.lineTo(canvas.width,i);
+        ctx.stroke();
+    }
+
+    /* CÍRCULOS ROTATIVOS */
+    for(let i=0;i<4;i++){
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(120,200,255,${0.15 - i*0.03})`;
+        ctx.arc(cx, cy, 100 + i*50, t*(i+1)*0.3, t*(i+1)*0.3 + Math.PI);
+        ctx.stroke();
+    }
+
+    /* RADAR */
+    let angle = t;
+
+    let gradient = ctx.createRadialGradient(cx,cy,0,cx,cy,200);
+    gradient.addColorStop(0,"rgba(120,200,255,0.08)");
+    gradient.addColorStop(1,"transparent");
+
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,200,angle,angle+0.2);
+    ctx.fill();
+
+    /* PARTÍCULAS */
+    particles.forEach(p=>{
+        p.angle += p.speed;
+
+        let x = cx + Math.cos(p.angle)*p.radius;
+        let y = cy + Math.sin(p.angle)*p.radius;
+
+        ctx.fillStyle = "rgba(150,220,255,0.6)";
+        ctx.beginPath();
+        ctx.arc(x,y,1.5,0,Math.PI*2);
+        ctx.fill();
+    });
+
+    /* LINHAS DINÂMICAS */
+    for(let i=0;i<6;i++){
+        ctx.strokeStyle = "rgba(150,220,255,0.1)";
+        ctx.beginPath();
+        ctx.moveTo(cx,cy);
+        ctx.lineTo(
+            cx + Math.cos(i+t)*180,
+            cy + Math.sin(i+t)*180
+        );
+        ctx.stroke();
+    }
+
+    t += 0.01;
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+
+window.addEventListener("resize", ()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
 
 </body>
 </html>
